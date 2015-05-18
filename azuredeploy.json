@@ -96,7 +96,7 @@
                         "displayName": "SQLDatabase"
                     },
                     "dependsOn": [
-                        "[concat('Microsoft.Sql/servers/', parameters('sqlServerName'))]"
+                        "[resourceId('Microsoft.Sql/servers', parameters('sqlServerName'))]"
                     ],
                     "properties": {
                         "edition": "[parameters('sqlDbEdition')]",
@@ -111,7 +111,7 @@
                     "type": "firewallrules",
                     "location": "[parameters('sqlServerLocation')]",
                     "dependsOn": [
-                        "[concat('Microsoft.Sql/servers/', parameters('sqlServerName'))]"
+                        "[resourceId('Microsoft.Sql/servers', parameters('sqlServerName'))]"
                     ],
                     "properties": {
                         "endIpAddress": "0.0.0.0",
@@ -138,8 +138,8 @@
             "type": "Microsoft.Web/sites",
             "location": "[parameters('siteLocation')]",
             "dependsOn": [
-                "[concat('Microsoft.Web/serverFarms/', parameters('hostingPlanName'))]",
-                "[concat('Microsoft.Sql/servers/', parameters('sqlServerName'))]"
+                "[resourceId('Microsoft.Web/serverFarms', parameters('hostingPlanName'))]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sqlServerName'))]"
             ],
             "properties": {
                 "serverFarmId": "[parameters('hostingPlanName')]"
@@ -163,7 +163,7 @@
                     "type": "config",
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/Sites', variables('apiSiteName'))]",
-                        "[concat('Microsoft.Sql/servers/', parameters('sqlServerName'))]"
+                        "[resourceId('Microsoft.Sql/servers', parameters('sqlServerName'))]"
                     ],
                     "properties": {
                         "MultiChannelToDoContext": { "value": "[concat('Data Source=tcp:', reference(concat('Microsoft.Sql/servers/', parameters('sqlServerName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', parameters('sqlDbName'), ';User Id=', parameters('sqlServerAdminLogin'), '@', parameters('sqlServerName'), ';Password=', parameters('sqlServerAdminPassword'), ';')]", "type": "SQLAzure" }
@@ -192,7 +192,7 @@
             "type": "Microsoft.Web/sites",
             "location": "[parameters('siteLocation')]",
             "dependsOn": [
-                "[concat('Microsoft.Web/serverFarms/', parameters('hostingPlanName'))]"
+                "[resourceId('Microsoft.Web/serverFarms', parameters('hostingPlanName'))]"
             ],
             "properties": {
                 "serverFarmId": "[parameters('hostingPlanName')]"
@@ -203,7 +203,7 @@
                     "name": "appsettings",
                     "type": "config",
                     "dependsOn": [
-                        "[concat('Microsoft.Web/sites/', parameters('siteName'))]",
+                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]",
                     ],
                     "properties": {
                         "PROJECT": "src\\MultiChannelToDo.Web\\app",
