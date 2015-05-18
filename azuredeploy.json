@@ -142,7 +142,6 @@
                 "[concat('Microsoft.Sql/servers/', parameters('sqlServerName'))]"
             ],
             "properties": {
-                "name": "[variables('apiSiteName')]",
                 "serverFarmId": "[parameters('hostingPlanName')]"
             },
             "resources": [
@@ -196,7 +195,6 @@
                 "[concat('Microsoft.Web/serverFarms/', parameters('hostingPlanName'))]"
             ],
             "properties": {
-                "name": "[parameters('siteName')]",
                 "serverFarmId": "[parameters('hostingPlanName')]"
             },
             "resources": [
