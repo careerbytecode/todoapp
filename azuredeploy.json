@@ -173,7 +173,8 @@
                     "type": "sourcecontrols",
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/Sites', concat(parameters('siteName'), '-api'))]",
-                        "[concat('Microsoft.Web/sites/', parameters('siteName'), '-api', '/config/web')]"
+                        "[concat('Microsoft.Web/sites/', parameters('siteName'), '-api', '/config/appsettings')]",
+                        "[concat('Microsoft.Web/sites/', parameters('siteName'), '-api', '/config/connectionstrings')]"
                     ],
                     "properties": {
                         "RepoUrl": "[parameters('repoUrl')]",
