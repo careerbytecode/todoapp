@@ -70,6 +70,9 @@
             "defaultValue": "910b4fcb-8a29-4c3e-958f-f7ba794388b2"
         }
     },
+    "variables": {
+        "apiSiteName": "[concat(parameters('siteName'), 'Api')]"
+    },
     "resources": [
         {
             "apiVersion": "2014-04-01-preview",
@@ -131,7 +134,7 @@
         },
         {
             "apiVersion": "2015-04-01",
-            "name": "[concat(parameters('siteName'), '-api')]",
+            "name": "[variables('apiSiteName')]",
             "type": "Microsoft.Web/sites",
             "location": "[parameters('siteLocation')]",
             "dependsOn": [
@@ -139,7 +142,7 @@
                 "[concat('Microsoft.Sql/servers/', parameters('sqlServerName'))]"
             ],
             "properties": {
-                "name": "[concat(parameters('siteName'), '-api')]",
+                "name": "[variables('apiSiteName')]",
                 "serverFarm": "[parameters('hostingPlanName')]"
             },
             "resources": [
@@ -148,7 +151,7 @@
                     "name": "appsettings",
                     "type": "config",
                     "dependsOn": [
-                        "[concat('Microsoft.Web/sites/', parameters('siteName'), '-api')]",
+                        "[resourceId('Microsoft.Web/Sites', variables('apiSiteName'))]",
                     ],
                     "properties": {
                         "PROJECT": "src\\MultiChannelToDo\\MultiChannelToDo.csproj",
@@ -160,7 +163,7 @@
                     "name": "connectionstrings",
                     "type": "config",
                     "dependsOn": [
-                        "[concat('Microsoft.Web/sites/', parameters('siteName'), '-api')]",
+                        "[resourceId('Microsoft.Web/Sites', variables('apiSiteName'))]",
                         "[concat('Microsoft.Sql/servers/', parameters('sqlServerName'))]"
                     ],
                     "properties": {
@@ -172,9 +175,9 @@
                     "name": "web",
                     "type": "sourcecontrols",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Web/Sites', concat(parameters('siteName'), '-api'))]",
-                        "[concat('Microsoft.Web/sites/', parameters('siteName'), '-api', '/config/appsettings')]",
-                        "[concat('Microsoft.Web/sites/', parameters('siteName'), '-api', '/config/connectionstrings')]"
+                        "[resourceId('Microsoft.Web/Sites', variables('apiSiteName'))]",
+                        "[resourceId('Microsoft.Web/Sites/config', variables('apiSiteName'), 'appsettings')]",
+                        "[resourceId('Microsoft.Web/Sites/config', variables('apiSiteName'), 'connectionstrings')]",
                     ],
                     "properties": {
                         "RepoUrl": "[parameters('repoUrl')]",
@@ -206,7 +209,7 @@
                     ],
                     "properties": {
                         "PROJECT": "src\\MultiChannelToDo.Web\\app",
-                        "apiPath": "[concat('http://', parameters('siteName'), '-api', '.azurewebsites.net/api')]"
+                        "apiPath": "[concat('http://', variables('apiSiteName'), '.azurewebsites.net/api')]"
                     }
                 },
                 {
@@ -215,7 +218,7 @@
                     "type": "sourcecontrols",
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]",
-                        "[concat('Microsoft.Web/sites/', parameters('siteName'), '/config/web')]"
+                        "[resourceId('Microsoft.Web/Sites/config', parameters('siteName'), 'appsettings')]"
                     ],
                     "properties": {
                         "RepoUrl": "[parameters('repoUrl')]",
